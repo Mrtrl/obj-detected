@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+    </script>
+    <script>
+        function myFunction() {
+            // alert('我行了,第二次');
+            // alert(location.href);
+            var formData = new FormData($("#form")[0]);
+            $.ajax({
+                url: location.href,
+                type: 'POST',
+                data: formData,
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (returndata) {
+                    alert(returndata);
+                    // alert(returndata);
+                    classify(returndata)
+                },
+                error: function (returndata) {
+                    alert('上传失败');
+                }
+            });
+
+        }
+
+        // 展示skus functions
+        function showFunction() {
+            var showsku = $('div#showsku')
+            showsku.append()
+        }
+
+
+        function classify(distinc) {
+            alert('成功接收识别码', distinc);
+            $.ajax({
+                url: '/classify',
+                type: 'POST',
+                data: JSON.stringify({'distinc': distinc}),
+                async: true,
+                cache: false,
+                contentType: 'contentType: "application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (returndata) {
+                    alert(returndata);
+                },
+                error: function (returndata) {
+                    alert('接口调用失败！！')
+                }
+            })
+        }
+    </script>
+
+
+    <style type="text/css">
+        #upload {
+            /*background: #845ac7;*/
+            height: 500px;
+            width: 500px;
+            border: 3px solid #2fa8ec;
+        }
+
+        #form {
+            margin: 20px;
+        }
+
+        #showsku {
+            margin: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+<div id="upload">
+    <form id="form" enctype="multipart/form-data">
+        <h1>Realshare clothes classify</h1>
+        <h5>请在此处上传衣领标</h5>
+        <input type="file" name="logo" value="logo">
+        <br><br>
+        <h5>请在此处上传主体图</h5>
+        <input type="file" name="main" id="main">
+        <br><br>
+        <input type="button" value="确认提交" onclick="myFunction()">
+    </form>
+    <hr style="background-color: #2fa8ec">
+</div>
+
+<br><br>
+<!--<input type="button" style="display: none" id="download" value="请下载分析结果" src="/download">-->
+<div id="showsku"></div>
+<a style="display: none" id="download">请下载分析结果</a>
+</body>
+</html>
